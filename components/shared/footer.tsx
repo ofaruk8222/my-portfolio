@@ -29,25 +29,6 @@ export function Footer() {
 
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400">
-              Explore
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {footerLinks.map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                  >
-                    <ArrowUpRight className="h-4 w-4" />
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400">
               Contact
             </h3>
             <div className="mt-4 space-y-3">

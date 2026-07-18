@@ -1,4 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+
+const handleDownloadCv = () => {
+  // Placeholder for future CV file download
+};
 
 export function HomeHero() {
   return (
@@ -9,11 +16,18 @@ export function HomeHero() {
             Welcome
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl lg:text-5xl dark:text-white">
-            I’m Linel — a passionate footballer. Looking to get my second world cup in a row and making it look effortless.
+            I'm Lionel — a passionate footballer. Looking to get my second world cup in a row and making it look effortless.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
             I brake defences, I score goals, I make history. I am the best footballer in the world and I will prove it again in this world cup.
           </p>
+          <Button
+            type="button"
+            onClick={handleDownloadCv}
+            className="mt-8 rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+          >
+            Download CV
+          </Button>
         </div>
 
         <div className="flex justify-center lg:justify-end">

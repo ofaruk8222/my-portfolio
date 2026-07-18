@@ -15,20 +15,21 @@ const navigationItems = [
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    const stored = window.localStorage.getItem("theme");
-    if (stored) {
-      return stored === "dark";
-    }
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [isDark, setIsDark] = useState<boolean | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    const stored = window.localStorage.getItem("theme");
+    const initialDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setIsDark(initialDark);
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (isDark === null) {
+      return;
+    }
+
     const root = document.documentElement;
     root.classList.toggle("dark", isDark);
     window.localStorage.setItem("theme", isDark ? "dark" : "light");
@@ -42,7 +43,7 @@ export function Header() {
   };
 
   return (
-    <header className="border-b border-zinc-200 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/80">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/80">
       <PageContainer className="py-4">
         <div className="flex items-center justify-between rounded-full border border-zinc-200 bg-white/90 px-3 py-2 shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-black/20 sm:px-4">
           <Link href="/" className="flex items-center gap-3">
@@ -55,22 +56,26 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-6 md:flex">
-            {navigationItems.map((item) => (
-              <Link key={item.label} href={item.href} className="text-sm font-medium text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
           <div className="hidden items-center gap-2 md:flex">
+            <nav className="mr-2 flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-2 py-1 shadow-sm dark:border-white/10 dark:bg-zinc-900/80">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="rounded-full px-3 py-1.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
             <button
               type="button"
               onClick={toggleTheme}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
+              suppressHydrationWarning
             >
-              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              {isHydrated && isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
             </button>
             <Link
               href="#contact"
@@ -86,8 +91,9 @@ export function Header() {
               onClick={toggleTheme}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
+              suppressHydrationWarning
             >
-              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              {isHydrated && isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
             </button>
             <button
               type="button"
