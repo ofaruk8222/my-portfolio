@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { TechStack } from "@/components/sections/home/tech-stack";
 import { Button } from "@/components/ui/button";
 
 const handleDownloadCv = () => {
@@ -13,13 +14,13 @@ export function HomeHero() {
       <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
         <div className="flex flex-col items-start text-left">
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">
-            Welcome
+            Welcome to my portfolio
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl lg:text-5xl dark:text-white">
-            I'm Lionel — a passionate footballer. Looking to get my second world cup in a row and making it look effortless.
+            I'm Lionel
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
-            I brake defences, I score goals, I make history. I am the best footballer in the world and I will prove it again in this world cup.
+            I am a passionate software engineer.  I have nearly Two decades of experience in the industry. I build scalable web applications and solve complex problems with clean, efficient code.
           </p>
           <Button
             type="button"
@@ -28,6 +29,7 @@ export function HomeHero() {
           >
             Download CV
           </Button>
+          <TechStack />
         </div>
 
         <div className="flex justify-center lg:justify-end">

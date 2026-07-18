@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Mail, Send } from "lucide-react";
+import { FaLinkedin, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
 import { PageContainer } from "@/components/shared/container";
 
@@ -20,7 +21,7 @@ export function Footer() {
               Messi Portfolio
             </p>
             <h2 className="mt-3 text-2xl font-semibold text-zinc-950 dark:text-white">
-              Let&apos;s make history.
+              Let&apos;s make something useful.
             </h2>
             <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300">
               I design thoughtful websites and digital products with clarity, personality, and a strong sense of purpose.
@@ -44,14 +45,46 @@ export function Footer() {
                 className="inline-flex items-center gap-2 rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:text-zinc-200 dark:hover:bg-white/10"
               >
                 <Send className="h-4 w-4" />
-                Start a match
+                Start a project
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 border-t border-zinc-200 pt-6 text-sm text-zinc-500 dark:border-white/10 dark:text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Messi Portfolio. All rights reserved.</p>
+        <div className="mt-6 border-t border-zinc-200 pt-6 dark:border-white/10">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://wa.me/1234567890"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900 text-white transition hover:-translate-y-0.5 hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              <FaWhatsapp className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900 text-white transition hover:-translate-y-0.5 hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              <FaLinkedin className="h-5 w-5" />
+            </a>
+            <a
+              href="https://x.com/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="X"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900 text-white transition hover:-translate-y-0.5 hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              <FaXTwitter className="h-5 w-5" />
+            </a>
+          </div>
+
+          <p className="mt-4 text-center text-sm text-zinc-500 dark:text-zinc-400">
+            © 2026 Messi Portfolio. All rights reserved.
+          </p>
         </div>
       </PageContainer>
     </footer>
