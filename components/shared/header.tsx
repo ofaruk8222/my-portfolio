@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X, MoonStar, SunMedium } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/container";
 
 const navigationItems = [
@@ -65,40 +64,39 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
               onClick={toggleTheme}
-              className="rounded-full border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
             >
               {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
-            </Button>
-            <Button asChild className="rounded-full bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
-              <Link href="#contact">Let&apos;s talk</Link>
-            </Button>
+            </button>
+            <Link
+              href="#contact"
+              className="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+            >
+              Let&apos;s talk
+            </Link>
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
               onClick={toggleTheme}
-              className="rounded-full border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
             >
               {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="rounded-full border border-zinc-200 bg-white p-2 text-zinc-700 hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white p-2 text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle navigation"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -116,11 +114,13 @@ export function Header() {
                 </Link>
               ))}
             </nav>
-            <Button asChild className="mt-4 w-full rounded-full bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
-              <Link href="#contact" onClick={() => setIsMenuOpen(false)}>
-                Let&apos;s talk
-              </Link>
-            </Button>
+            <Link
+              href="#contact"
+              onClick={() => setIsMenuOpen(false)}
+              className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+            >
+              Let&apos;s talk
+            </Link>
           </div>
         ) : null}
       </PageContainer>

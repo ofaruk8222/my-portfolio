@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/shared/footer";
 import { cn } from "@/lib/utils";
 
 const lora = Lora({subsets:['latin'],variable:'--font-serif'});
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-stone-50 text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
         {children}
+        <Footer />
       </body>
     </html>
   );
