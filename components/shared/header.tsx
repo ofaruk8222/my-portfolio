@@ -21,8 +21,12 @@ export function Header() {
   useEffect(() => {
     const stored = window.localStorage.getItem("theme");
     const initialDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setIsDark(initialDark);
-    setIsHydrated(true);
+    
+    // Defer state update to next tick to avoid synchronous setState cascade warning
+    setTimeout(() => {
+      setIsDark(initialDark);
+      setIsHydrated(true);
+    }, 0);
   }, []);
 
   useEffect(() => {

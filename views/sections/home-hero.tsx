@@ -17,7 +17,7 @@ export function HomeHero() {
             Welcome to my portfolio
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl lg:text-5xl dark:text-white">
-            I'm Lionel
+            I&apos;m Lionel Messi
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
             I am a passionate software engineer.  I have nearly Two decades of experience in the industry. I build scalable web applications and solve complex problems with clean, efficient code.
