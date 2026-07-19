@@ -1,5 +1,5 @@
 import { PageContainer } from "@/components/shared/container";
-import { HomeHero } from "@/components/sections/home-hero";
+import { HomeHero } from "@/views/sections/home-hero";
 
 const HomePage = () => {
   return (

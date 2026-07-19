@@ -1,8 +1,8 @@
-import { SkillsContainer } from "@/components/sections/skills/container";
-import { CppCard } from "@/components/sections/skills/cards/c-cpp";
-import { JavaCard } from "@/components/sections/skills/cards/java";
-import { HtmlCssCard } from "@/components/sections/skills/cards/html-css";
-import { PythonCard } from "@/components/sections/skills/cards/python";
+import { SkillsContainer } from "@/views/sections/skills/container";
+import { CppCard } from "@/views/sections/skills/cards/c-cpp";
+import { JavaCard } from "@/views/sections/skills/cards/java";
+import { HtmlCssCard } from "@/views/sections/skills/cards/html-css";
+import { PythonCard } from "@/views/sections/skills/cards/python";
 
 export function SkillsSection() {
   return (

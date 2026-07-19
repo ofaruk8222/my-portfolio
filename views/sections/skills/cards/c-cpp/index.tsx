@@ -1,6 +1,6 @@
-import { CppIcon } from "@/components/sections/skills/cards/c-cpp/icon";
-import { CppSubtitle } from "@/components/sections/skills/cards/c-cpp/subtitle";
-import { CppTitle } from "@/components/sections/skills/cards/c-cpp/title";
+import { CppIcon } from "@/views/sections/skills/cards/c-cpp/icon";
+import { CppSubtitle } from "@/views/sections/skills/cards/c-cpp/subtitle";
+import { CppTitle } from "@/views/sections/skills/cards/c-cpp/title";
 
 export function CppCard() {
   return (

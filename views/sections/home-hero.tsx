@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { TechStack } from "@/components/sections/home/tech-stack";
+import { TechStack } from "@/views/sections/home/tech-stack";
 import { Button } from "@/components/ui/button";
 
 const handleDownloadCv = () => {

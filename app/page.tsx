@@ -1,5 +1,5 @@
-import { HomeHero } from "@/components/sections/home-hero";
-import { SkillsSection } from "@/components/sections/skills";
+import { HomeHero } from "@/views/sections/home-hero";
+import { SkillsSection } from "@/views/sections/skills";
 import { PageContainer } from "@/components/shared/container";
 
 export default function HomePage() {

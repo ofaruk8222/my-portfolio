@@ -1,6 +1,6 @@
-import { PythonIcon } from "@/components/sections/skills/cards/python/icon";
-import { PythonSubtitle } from "@/components/sections/skills/cards/python/subtitle";
-import { PythonTitle } from "@/components/sections/skills/cards/python/title";
+import { PythonIcon } from "@/views/sections/skills/cards/python/icon";
+import { PythonSubtitle } from "@/views/sections/skills/cards/python/subtitle";
+import { PythonTitle } from "@/views/sections/skills/cards/python/title";
 
 export function PythonCard() {
   return (

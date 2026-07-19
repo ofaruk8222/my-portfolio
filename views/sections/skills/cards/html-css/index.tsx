@@ -1,6 +1,6 @@
-import { HtmlCssIcon } from "@/components/sections/skills/cards/html-css/icon";
-import { HtmlCssSubtitle } from "@/components/sections/skills/cards/html-css/subtitle";
-import { HtmlCssTitle } from "@/components/sections/skills/cards/html-css/title";
+import { HtmlCssIcon } from "@/views/sections/skills/cards/html-css/icon";
+import { HtmlCssSubtitle } from "@/views/sections/skills/cards/html-css/subtitle";
+import { HtmlCssTitle } from "@/views/sections/skills/cards/html-css/title";
 
 export function HtmlCssCard() {
   return (

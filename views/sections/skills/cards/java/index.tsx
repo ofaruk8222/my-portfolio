@@ -1,6 +1,6 @@
-import { JavaIcon } from "@/components/sections/skills/cards/java/icon";
-import { JavaSubtitle } from "@/components/sections/skills/cards/java/subtitle";
-import { JavaTitle } from "@/components/sections/skills/cards/java/title";
+import { JavaIcon } from "@/views/sections/skills/cards/java/icon";
+import { JavaSubtitle } from "@/views/sections/skills/cards/java/subtitle";
+import { JavaTitle } from "@/views/sections/skills/cards/java/title";
 
 export function JavaCard() {
   return (
