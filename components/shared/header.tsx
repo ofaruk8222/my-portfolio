@@ -1,28 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Menu, X, MoonStar, SunMedium } from "lucide-react";
 
 import { PageContainer } from "@/components/shared/container";
+import { cn } from "@/lib/utils";
 
 const navigationItems = [
   { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
+
+const HEADER_OFFSET = 96;
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState<boolean | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
 
   useEffect(() => {
     const stored = window.localStorage.getItem("theme");
     const initialDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    
-    // Defer state update to next tick to avoid synchronous setState cascade warning
+
     setTimeout(() => {
       setIsDark(initialDark);
       setIsHydrated(true);
@@ -39,11 +44,78 @@ export function Header() {
     window.localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
 
+  useEffect(() => {
+    const sectionElements = navigationItems
+      .map((item) => document.querySelector(item.href))
+      .filter((element): element is HTMLElement => element instanceof HTMLElement);
+
+    if (sectionElements.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries[0]?.target.id) {
+          setActiveSection(visibleEntries[0].target.id);
+        }
+      },
+      {
+        rootMargin: `-${HEADER_OFFSET}px 0px -55% 0px`,
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    sectionElements.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   const toggleTheme = () => {
     const nextTheme = !isDark ? "dark" : "light";
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
     window.localStorage.setItem("theme", nextTheme);
     setIsDark(nextTheme === "dark");
+  };
+
+  const handleNavClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      event.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const top = element.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+        window.scrollTo({ top, behavior: "smooth" });
+        setActiveSection(targetId);
+      }
+
+      setIsMenuOpen(false);
+    },
+    [],
+  );
+
+  const getNavLinkClassName = (href: string, isMobile = false) => {
+    const isActive = activeSection === href.replace("#", "");
+
+    if (isMobile) {
+      return cn(
+        "rounded-lg px-2 py-2 text-sm font-medium transition",
+        isActive
+          ? "bg-zinc-950 font-semibold text-white dark:bg-white dark:text-zinc-950"
+          : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white",
+      );
+    }
+
+    return cn(
+      "rounded-full px-3 py-1.5 text-sm font-medium transition",
+      isActive
+        ? "bg-zinc-950 font-semibold text-white shadow-sm dark:bg-white dark:text-zinc-950"
+        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white",
+    );
   };
 
   return (
@@ -66,7 +138,9 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="rounded-full px-3 py-1.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
+                  onClick={(event) => handleNavClick(event, item.href)}
+                  className={getNavLinkClassName(item.href)}
+                  aria-current={activeSection === item.href.replace("#", "") ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
@@ -83,6 +157,7 @@ export function Header() {
             </button>
             <Link
               href="#contact"
+              onClick={(event) => handleNavClick(event, "#contact")}
               className="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
             >
               Let&apos;s talk
@@ -117,8 +192,9 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="rounded-lg px-2 py-2 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
+                  onClick={(event) => handleNavClick(event, item.href)}
+                  className={getNavLinkClassName(item.href, true)}
+                  aria-current={activeSection === item.href.replace("#", "") ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
@@ -126,7 +202,7 @@ export function Header() {
             </nav>
             <Link
               href="#contact"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(event) => handleNavClick(event, "#contact")}
               className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
             >
               Let&apos;s talk
