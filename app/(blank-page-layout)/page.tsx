@@ -1,5 +1,7 @@
 import { HomeView } from "@/views/home";
 
-export default function HomePage() {
+const HomePage = () => {
   return <HomeView />;
-}
+};
+
+export default HomePage;

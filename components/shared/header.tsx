@@ -1,38 +1,78 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Menu, X, MoonStar, SunMedium } from "lucide-react";
 
 import { PageContainer } from "@/components/shared/container";
+import { cn } from "@/lib/utils";
 
 const navigationItems = [
   { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
 
+const HEADER_OFFSET = 96;
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    const stored = window.localStorage.getItem("theme");
-    if (stored) {
-      return stored === "dark";
-    }
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [isDark, setIsDark] = useState<boolean | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
 
   useEffect(() => {
+    const stored = window.localStorage.getItem("theme");
+    const initialDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    setTimeout(() => {
+      setIsDark(initialDark);
+      setIsHydrated(true);
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    if (isDark === null) {
+      return;
+    }
+
     const root = document.documentElement;
     root.classList.toggle("dark", isDark);
     window.localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
+
+  useEffect(() => {
+    const sectionElements = navigationItems
+      .map((item) => document.querySelector(item.href))
+      .filter((element): element is HTMLElement => element instanceof HTMLElement);
+
+    if (sectionElements.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries[0]?.target.id) {
+          setActiveSection(visibleEntries[0].target.id);
+        }
+      },
+      {
+        rootMargin: `-${HEADER_OFFSET}px 0px -55% 0px`,
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    sectionElements.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
 
   const toggleTheme = () => {
     const nextTheme = !isDark ? "dark" : "light";
@@ -41,8 +81,45 @@ export function Header() {
     setIsDark(nextTheme === "dark");
   };
 
+  const handleNavClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      event.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const top = element.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+        window.scrollTo({ top, behavior: "smooth" });
+        setActiveSection(targetId);
+      }
+
+      setIsMenuOpen(false);
+    },
+    [],
+  );
+
+  const getNavLinkClassName = (href: string, isMobile = false) => {
+    const isActive = activeSection === href.replace("#", "");
+
+    if (isMobile) {
+      return cn(
+        "rounded-lg px-2 py-2 text-sm font-medium transition",
+        isActive
+          ? "bg-zinc-950 font-semibold text-white dark:bg-white dark:text-zinc-950"
+          : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white",
+      );
+    }
+
+    return cn(
+      "rounded-full px-3 py-1.5 text-sm font-medium transition",
+      isActive
+        ? "bg-zinc-950 font-semibold text-white shadow-sm dark:bg-white dark:text-zinc-950"
+        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white",
+    );
+  };
+
   return (
-    <header className="border-b border-zinc-200 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/80">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/80">
       <PageContainer className="py-4">
         <div className="flex items-center justify-between rounded-full border border-zinc-200 bg-white/90 px-3 py-2 shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-black/20 sm:px-4">
           <Link href="/" className="flex items-center gap-3">
@@ -55,25 +132,32 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-6 md:flex">
-            {navigationItems.map((item) => (
-              <Link key={item.label} href={item.href} className="text-sm font-medium text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
           <div className="hidden items-center gap-2 md:flex">
+            <nav className="mr-2 flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-2 py-1 shadow-sm dark:border-white/10 dark:bg-zinc-900/80">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={(event) => handleNavClick(event, item.href)}
+                  className={getNavLinkClassName(item.href)}
+                  aria-current={activeSection === item.href.replace("#", "") ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
             <button
               type="button"
               onClick={toggleTheme}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
+              suppressHydrationWarning
             >
-              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              {isHydrated && isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
             </button>
             <Link
               href="#contact"
+              onClick={(event) => handleNavClick(event, "#contact")}
               className="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
             >
               Let&apos;s talk
@@ -86,8 +170,9 @@ export function Header() {
               onClick={toggleTheme}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
               aria-label="Toggle color mode"
+              suppressHydrationWarning
             >
-              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              {isHydrated && isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
             </button>
             <button
               type="button"
@@ -107,8 +192,9 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="rounded-lg px-2 py-2 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
+                  onClick={(event) => handleNavClick(event, item.href)}
+                  className={getNavLinkClassName(item.href, true)}
+                  aria-current={activeSection === item.href.replace("#", "") ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
@@ -116,7 +202,7 @@ export function Header() {
             </nav>
             <Link
               href="#contact"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(event) => handleNavClick(event, "#contact")}
               className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
             >
               Let&apos;s talk

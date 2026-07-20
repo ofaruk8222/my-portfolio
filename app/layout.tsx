@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
+import "devicon/devicon.min.css";
 import { Footer } from "@/components/shared/footer";
+import { Header } from "@/components/shared/header";
 import { cn } from "@/lib/utils";
 
 const lora = Lora({subsets:['latin'],variable:'--font-serif'});
@@ -32,6 +34,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-serif", lora.variable)}
     >
       <body className="min-h-full flex flex-col bg-stone-50 text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
+        <Header />
         {children}
         <Footer />
       </body>
