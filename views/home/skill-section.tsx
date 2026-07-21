@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { SkillCard } from "@/components/ui/skill-card";
 import { cn } from "@/lib/utils";
+import { SKILLS_DATA } from "@/lib/data/skills";
 
 interface SkillsContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -21,6 +22,19 @@ function SkillsContainer({ children, className, ...props }: SkillsContainerProps
   );
 }
 
+function renderSkillIcon(iconClass: string | readonly string[]) {
+  if (Array.isArray(iconClass)) {
+    return (
+      <div className="flex items-center gap-2" aria-hidden="true">
+        {(iconClass as string[]).map((cls) => (
+          <i key={cls} className={`${cls} text-2xl`} />
+        ))}
+      </div>
+    );
+  }
+  return <i className={`${iconClass} text-2xl`} aria-hidden="true" />;
+}
+
 export function SkillSection() {
   return (
     <section id="skills" className="mt-8 sm:mt-10 lg:mt-12">
@@ -30,43 +44,23 @@ export function SkillSection() {
             Skills
           </p>
           <h2 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-white">
-            Building strong foundations in code and problem solving.
+            {SKILLS_DATA.sectionTitle}
           </h2>
           <p className="max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300">
-            I enjoy working across core programming languages and modern web technologies to create polished, reliable experiences.
+            {SKILLS_DATA.sectionSubTitle}
           </p>
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <SkillCard
-            title="C/C++"
-            description="Strong in systems thinking, performance-minded code, and low-level problem solving."
-            color="sky"
-            icon={<i className="devicon-cplusplus-plain text-2xl" aria-hidden="true" />}
-          />
-          <SkillCard
-            title="Java"
-            description="Experienced with object-oriented design, APIs, and building scalable backend logic."
-            color="amber"
-            icon={<i className="devicon-java-plain text-2xl" aria-hidden="true" />}
-          />
-          <SkillCard
-            title="HTML/CSS"
-            description="Crafting responsive layouts and polished interfaces with modern styling techniques."
-            color="rose"
-            icon={
-              <div className="flex items-center gap-2" aria-hidden="true">
-                <i className="devicon-html5-plain text-2xl" />
-                <i className="devicon-css3-plain text-2xl" />
-              </div>
-            }
-          />
-          <SkillCard
-            title="Python"
-            description="Bringing automation, data workflows, and clean scripting into everyday solutions."
-            color="emerald"
-            icon={<i className="devicon-python-plain text-2xl" aria-hidden="true" />}
-          />
+          {SKILLS_DATA.skills.map((skill) => (
+            <SkillCard
+              key={skill.title}
+              title={skill.title}
+              description={skill.description}
+              color={skill.color}
+              icon={renderSkillIcon(skill.iconClass)}
+            />
+          ))}
         </div>
       </SkillsContainer>
     </section>

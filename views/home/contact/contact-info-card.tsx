@@ -19,7 +19,7 @@ export function ContactInfoCard() {
         </li>
         <li className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-300">
           <MapPin className="h-4 w-4 shrink-0 text-zinc-400" />
-          Remote / Worldwide
+          {PERSONAL_DETAILS.location}
         </li>
       </ul>
     </div>
