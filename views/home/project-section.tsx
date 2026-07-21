@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "@/lib/utils";
 
 import { ProjectCard } from "@/components/ui/project-card";
 import { ProjectModal } from "@/components/ui/project-modal";
@@ -16,6 +17,24 @@ interface Project {
   imageAlt: string;
   liveUrl?: string;
   githubUrl: string;
+}
+
+interface ProjectsContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+function ProjectsContainer({ children, className, ...props }: ProjectsContainerProps) {
+  return (
+    <div
+      className={cn(
+        "rounded-[2rem] border border-zinc-200 bg-white/90 p-6 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10 dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-black/20",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 }
 
 const projects: Project[] = [
@@ -67,46 +86,48 @@ export function ProjectSection() {
 
   return (
     <section id="projects" className="mt-8 sm:mt-10 lg:mt-12">
-      <div className="flex flex-col gap-4 text-center sm:text-left">
-        <p className="text-sm font-medium uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">
-          Projects
-        </p>
-        <h2 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-white">
-          Selected work and side projects.
-        </h2>
-      </div>
+      <ProjectsContainer>
+        <div className="flex flex-col gap-4 text-center sm:text-left">
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">
+            Projects
+          </p>
+          <h2 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-white">
+            Selected work and side projects.
+          </h2>
+        </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            className="min-w-0 w-full"
-            title={project.title}
-            description={project.description}
-            tags={project.tags}
-            imageUrl={project.imageUrl}
-            imageAlt={project.imageAlt}
-            liveUrl={project.liveUrl}
-            githubUrl={project.githubUrl}
-            onOpenModal={() => setSelectedId(project.id)}
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              className="min-w-0 w-full"
+              title={project.title}
+              description={project.description}
+              tags={project.tags}
+              imageUrl={project.imageUrl}
+              imageAlt={project.imageAlt}
+              liveUrl={project.liveUrl}
+              githubUrl={project.githubUrl}
+              onOpenModal={() => setSelectedId(project.id)}
+            />
+          ))}
+        </div>
+
+        {selected && (
+          <ProjectModal
+            open={selectedId !== null}
+            onClose={() => setSelectedId(null)}
+            title={selected.title}
+            description={selected.description}
+            longDescription={selected.longDescription}
+            tags={selected.tags}
+            imageUrl={selected.imageUrl}
+            imageAlt={selected.imageAlt}
+            liveUrl={selected.liveUrl}
+            githubUrl={selected.githubUrl}
           />
-        ))}
-      </div>
-
-      {selected && (
-        <ProjectModal
-          open={selectedId !== null}
-          onClose={() => setSelectedId(null)}
-          title={selected.title}
-          description={selected.description}
-          longDescription={selected.longDescription}
-          tags={selected.tags}
-          imageUrl={selected.imageUrl}
-          imageAlt={selected.imageAlt}
-          liveUrl={selected.liveUrl}
-          githubUrl={selected.githubUrl}
-        />
-      )}
+        )}
+      </ProjectsContainer>
     </section>
   );
 }
