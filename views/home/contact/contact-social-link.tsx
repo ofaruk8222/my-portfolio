@@ -1,9 +1,10 @@
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
+import { SOCIAL_LINKS } from "@/lib/data/personal-details";
 
 const socialLinks = [
-  { label: "GitHub", href: "https://github.com/ofaruk8222", icon: FaGithub },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: FaLinkedin },
-  { label: "X (Twitter)", href: "https://x.com", icon: FaXTwitter },
+  { label: "GitHub", href: SOCIAL_LINKS.github, icon: FaGithub },
+  { label: "LinkedIn", href: SOCIAL_LINKS.linkedIn, icon: FaLinkedin },
+  { label: "X (Twitter)", href: SOCIAL_LINKS.x, icon: FaXTwitter },
 ];
 
 export function ContactSocialLink() {

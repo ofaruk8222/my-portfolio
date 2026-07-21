@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import { PERSONAL_DETAILS } from "@/lib/data/personal-details";
 
 export function ContactInfoCard() {
   return (
@@ -10,11 +11,11 @@ export function ContactInfoCard() {
       <ul className="mt-6 flex flex-col gap-4">
         <li className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-300">
           <Mail className="h-4 w-4 shrink-0 text-zinc-400" />
-          leo_messi@gmail.com
+          {PERSONAL_DETAILS.email}
         </li>
         <li className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-300">
           <Phone className="h-4 w-4 shrink-0 text-zinc-400" />
-          0176942069420
+          {PERSONAL_DETAILS.phone}
         </li>
         <li className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-300">
           <MapPin className="h-4 w-4 shrink-0 text-zinc-400" />

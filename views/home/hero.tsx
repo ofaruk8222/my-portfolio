@@ -6,6 +6,7 @@ import { FaServer } from "react-icons/fa6";
 import { FaDatabase } from "react-icons/fa6";
 import { FaScrewdriverWrench } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
+import { PERSONAL_DETAILS } from "@/lib/data/personal-details";
 
 const handleDownloadCv = () => {
   // Placeholder for future CV file download
@@ -74,10 +75,10 @@ export function Hero() {
             Welcome to my portfolio
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl lg:text-5xl dark:text-white">
-            I&apos;m Lionel Messi
+            {PERSONAL_DETAILS.headings[0]}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
-            I am a passionate software engineer.  I have nearly Two decades of experience in the industry. I build scalable web applications and solve complex problems with clean, efficient code.
+            {PERSONAL_DETAILS.postDescription}
           </p>
           <Button
             type="button"
@@ -93,8 +94,8 @@ export function Hero() {
           <div className="flex h-full w-full max-w-[460px] items-center justify-center bg-transparent p-0 shadow-none">
             <div className="flex h-[32rem] w-full items-center justify-center overflow-hidden bg-transparent">
               <Image
-                src="/images/messi.png"
-                alt="Messi"
+                src={PERSONAL_DETAILS.image}
+                alt={PERSONAL_DETAILS.fullName}
                 width={460}
                 height={800}
                 className="h-full w-full object-contain"
